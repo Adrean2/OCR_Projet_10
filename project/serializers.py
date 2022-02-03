@@ -50,10 +50,10 @@ class ContributorListSerializer(ModelSerializer):
         fields = ["user","role"]
     
     def create(self,validated_data):
-        if "role" not in validated_data:
-            role = "PARTICIPANT"
+        if self.context["request"].user == validated_data['user']:
+            role = "AUTHOR"
         else:
-            role = validated_data["role"]
+            role = "PARTICIPANT"
     
         contributor = models.Contributor.objects.create(
             user = validated_data["user"],

@@ -1,8 +1,7 @@
-from django.db import models,transaction
+from django.db import models
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth import get_user_model
-from django.db.models import Q 
+
 
 class User(AbstractUser):
     def __str__(self):
@@ -17,7 +16,7 @@ class Project(models.Model):
         ("A","Android"),
     ]
     title = models.CharField(max_length=200)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200,blank=True,null=True)
     type = models.CharField(max_length=1,choices=TYPE_CHOICES)
     contributors = models.ManyToManyField(User,through="Contributor")
 
@@ -75,7 +74,7 @@ class Issue(models.Model):
 
 
 class Comment(models.Model):
-    description = models.CharField(max_length=400,blank=True)
+    description = models.CharField(max_length=400,blank=True,null=True)
     issue = models.ForeignKey(Issue,on_delete=CASCADE)
     user = models.ForeignKey(to=User,on_delete=CASCADE)
 

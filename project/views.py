@@ -26,7 +26,7 @@ class projects(viewsets.ModelViewSet):
     
     def perform_create(self, serializer_class):
         project = serializer_class.save()
-        contributor = models.Contributor.objects.create(project=project,role="AUTHOR",user=self.request.user)   
+        contributor = models.Contributor.objects.create(project=project,user=self.request.user)   
 
 class contributors(viewsets.ModelViewSet):
     serializer_class = serializers.ContributorListSerializer
