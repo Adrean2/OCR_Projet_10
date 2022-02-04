@@ -1,10 +1,5 @@
 # OCR_Projet_10
 
-
-## Requirements
-Cette API utilise Django Rest Framework (DRF), l'authentification simplejwt ainsi que drf-nested-routers afin de répondre aux exigences du projet.<br>
-Vous trouverez les dépendences et leurs versions dans le fichier requirements.txt
-
 ## Création de l'environnement virtuel
 ### Pipenv
 Il faudra installer Pipenv sur votre machine afin de créer un environnement virtuel avec la commande: <br>
@@ -12,6 +7,11 @@ Il faudra installer Pipenv sur votre machine afin de créer un environnement vir
 
 ### Placez-vous ensuite dans le répertoire SoftDesk puis activez l'environnement virtuelle avec : <br>```pipenv shell```
 ![pipenvshell](https://puu.sh/IGZWY/ea4dd7b48b.png)
+
+## Requirements
+Cette API utilise Django Rest Framework (DRF), l'authentification simplejwt ainsi que drf-nested-routers afin de répondre aux exigences du projet.<br>
+Pour installer les requirements, l'environnement virtuel activé et toujours placé dans le répertoire SoftDesk utilisez la commande: <br>
+``` pip install -r requirements.txt```
 
 ## Utilisation de l'API
 ### Démarrer le serveur
