@@ -24,11 +24,4 @@ Ca y est, vous avez accès à l'API! Il ne reste plus qu'à suivre la documentat
 ![endpoints2](https://puu.sh/IGZPl/b2ae6b52d5.png)
 
 ### Postman
-Afin de pouvoir accéder a toutes les fonctionnalités il est conseillé d'utiliser Postman.<br>
-Vous pouvez importer la collection de tous les end-points ainsi que leurs documentation grâce à ce [lien](https://www.getpostman.com/collections/5c16736492daa2646003).<br>
-### Import de la collection
-Dans vos collections, cliquez sur le bouton **Import**<br>
-![import1](https://puu.sh/IGZT8/56e353a8d9.png)<br>
-Puis dans l'onglet **link**, copiez le lien JSON<br>
-![import2](https://puu.sh/IGZSj/656d6656f8.png)<br>
-![import3](https://puu.sh/IGZUa/75f60a31bd.png)<br>
+Vous pouvez accéder à toute la documentation postman [ici](https://documenter.getpostman.com/view/18150156/UVeGqkr4).
