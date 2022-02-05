@@ -1,9 +1,6 @@
-from xmlrpc.client import ResponseError
-from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets,status
 from rest_framework.response import Response
-from rest_framework.decorators import action,api_view,permission_classes
-from rest_framework.permissions import IsAuthenticated,AllowAny,DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from project.permissions import IsContributor,IsAuthor, IsProjectAuthor
 from . import serializers
 from . import models
@@ -13,7 +10,13 @@ class signup(viewsets.ModelViewSet):
     permission_classes =[AllowAny]
     serializer_class = serializers.SignUpSerializer
     queryset = models.User.objects.all()
-
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response({f"L'utilisateur a bien été créé"}, status=status.HTTP_201_CREATED, headers=headers)
 
 class projects(viewsets.ModelViewSet):
 
@@ -26,7 +29,18 @@ class projects(viewsets.ModelViewSet):
     
     def perform_create(self, serializer_class):
         project = serializer_class.save()
-        contributor = models.Contributor.objects.create(project=project,user=self.request.user)   
+        contributor = models.Contributor.objects.create(project=project,role="AUTHOR",user=self.request.user)
+        
+    def list(self,request):
+        queryset = models.Project.objects.filter(contributors__id=self.request.user.id)
+        serializer = serializers.ProjectListSerializer(queryset,many=True)
+        return Response(serializer.data)
+
+    def retrieve(self,request,pk):
+        queryset = models.Project.objects.filter(id=pk)
+        serializer = serializers.ProjectListSerializer(queryset,many=True)
+        return Response(serializer.data)
+
 
 class contributors(viewsets.ModelViewSet):
     serializer_class = serializers.ContributorListSerializer
@@ -57,6 +71,7 @@ class contributors(viewsets.ModelViewSet):
 class issues(viewsets.ModelViewSet):
     permission_classes = [IsContributor,IsAuthor]
     serializer_class = serializers.IssueListSerializer
+
     def get_queryset(self):
         return models.Issue.objects.filter(project=self.kwargs["project_pk"])
     
@@ -70,6 +85,7 @@ class issues(viewsets.ModelViewSet):
 class comments(viewsets.ModelViewSet):
     permission_classes = [IsContributor,IsAuthor]
     serializer_class = serializers.CommentListSerializer
+
     def get_queryset(self):
         return models.Comment.objects.filter(issue=self.kwargs["issue_pk"])
     

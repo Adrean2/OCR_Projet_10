@@ -16,7 +16,7 @@ class Project(models.Model):
         ("A","Android"),
     ]
     title = models.CharField(max_length=200)
-    description = models.CharField(max_length=200,blank=True,null=True)
+    description = models.CharField(max_length=200)
     type = models.CharField(max_length=1,choices=TYPE_CHOICES)
     contributors = models.ManyToManyField(User,through="Contributor")
 
@@ -74,7 +74,7 @@ class Issue(models.Model):
 
 
 class Comment(models.Model):
-    description = models.CharField(max_length=400,blank=True,null=True)
+    description = models.CharField(max_length=400,blank=True)
     issue = models.ForeignKey(Issue,on_delete=CASCADE)
     user = models.ForeignKey(to=User,on_delete=CASCADE)
 

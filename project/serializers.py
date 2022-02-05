@@ -1,5 +1,4 @@
-from dataclasses import fields
-from rest_framework.serializers import ModelSerializer,ReadOnlyField
+from rest_framework.serializers import ModelSerializer
 from . import models
 
 
@@ -50,10 +49,10 @@ class ContributorListSerializer(ModelSerializer):
         fields = ["user","role"]
     
     def create(self,validated_data):
-        if self.context["request"].user == validated_data['user']:
-            role = "AUTHOR"
-        else:
+        if "role" not in validated_data:
             role = "PARTICIPANT"
+        else:
+            role = validated_data["role"]
     
         contributor = models.Contributor.objects.create(
             user = validated_data["user"],
@@ -65,7 +64,7 @@ class ContributorListSerializer(ModelSerializer):
 
 
 class ProjectSerializer(ModelSerializer):
-    contributors = ContributorSerializer(source="contributor_set",many=True)
+    contributors = ContributorSerializer(source="contributor_set",many=True,required=False)
     class Meta:
         model = models.Project
         fields = ["title","description","type","contributors"]
@@ -79,6 +78,11 @@ class ProjectSerializer(ModelSerializer):
         project.save()
         return project
 
+class ProjectListSerializer(ModelSerializer):
+    contributors = ContributorSerializer(source="contributor_set",many=True,required=False)
+    class Meta:
+        model = models.Project
+        fields = ["id","title","description","type","contributors"]
 
 class IssueSerializer(ModelSerializer):
     class Meta:
