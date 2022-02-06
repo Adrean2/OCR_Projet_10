@@ -1,3 +1,4 @@
+from django.forms import IntegerField
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.password_validation import validate_password
 from . import models
@@ -47,7 +48,7 @@ class ContributorSerializer(ModelSerializer):
     user = UserSerializer()
     class Meta:
         model = models.Contributor
-        fields = ["id","user","role"]
+        fields = ["user","role"]
     
 
 class ContributorListSerializer(ModelSerializer):
@@ -72,9 +73,10 @@ class ContributorListSerializer(ModelSerializer):
 
 class ProjectSerializer(ModelSerializer):
     contributors = ContributorSerializer(source="contributor_set",many=True,required=False)
+    id = IntegerField(required=False)
     class Meta:
         model = models.Project
-        fields = ["title","description","type","contributors"]
+        fields = ["id","title","description","type","contributors"]
     
     def create(self,validated_data):
         project = models.Project.objects.create(
@@ -84,12 +86,13 @@ class ProjectSerializer(ModelSerializer):
         )
         project.save()
         return project
+    
 
 class ProjectListSerializer(ModelSerializer):
     contributors = ContributorSerializer(source="contributor_set",many=True,required=False)
     class Meta:
         model = models.Project
-        fields = ["id","title","description","type","contributors"]
+        fields = ["title","description","type","contributors"]
 
 class IssueSerializer(ModelSerializer):
     class Meta:

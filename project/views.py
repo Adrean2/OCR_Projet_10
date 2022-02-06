@@ -18,6 +18,7 @@ class signup(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response({f"L'utilisateur a bien été créé"}, status=status.HTTP_201_CREATED, headers=headers)
 
+
 class projects(viewsets.ModelViewSet):
 
     serializer_class = serializers.ProjectSerializer
@@ -31,16 +32,6 @@ class projects(viewsets.ModelViewSet):
         project = serializer_class.save()
         contributor = models.Contributor.objects.create(project=project,role="AUTHOR",user=self.request.user)
         
-    def list(self,request):
-        queryset = models.Project.objects.filter(contributors__id=self.request.user.id)
-        serializer = serializers.ProjectListSerializer(queryset,many=True)
-        return Response(serializer.data)
-
-    def retrieve(self,request,pk):
-        queryset = models.Project.objects.filter(id=pk)
-        serializer = serializers.ProjectListSerializer(queryset,many=True)
-        return Response(serializer.data)
-
 
 class contributors(viewsets.ModelViewSet):
     serializer_class = serializers.ContributorListSerializer
