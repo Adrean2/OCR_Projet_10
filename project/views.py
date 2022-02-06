@@ -22,7 +22,7 @@ class signup(viewsets.ModelViewSet):
 class projects(viewsets.ModelViewSet):
 
     serializer_class = serializers.ProjectSerializer
-    permission_classes = [IsAuthenticated,IsProjectAuthor]
+    permission_classes = [IsContributor,IsProjectAuthor]
 
     def get_queryset(self):
         queryset = models.Project.objects.filter(contributors__id=self.request.user.id)
